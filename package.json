@@ -1,12 +1,16 @@
 {
-  "name": "ts-next-postgres-boilerplate",
+  "name": "ts-next-pg-boilerplate",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "migrate:create": "drizzle-kit generate:pg --config=drizzle.config.ts --custom",
+    "migrate:generate": "drizzle-kit generate:pg --config=drizzle.config.ts",
+    "migrate:drop": "drizzle-kit drop --config=drizzle.config.ts",
+    "migrate:check": "drizzle-kit check:pg --config=drizzle.config.ts"
   },
   "dependencies": {
     "@aws-sdk/client-ssm": "^3.345.0",
