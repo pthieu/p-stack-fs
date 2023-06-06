@@ -10,6 +10,10 @@ const { Client } = require('pg');
 const nextConfig = {}
 
 module.exports = async (phase) => {
+  if(phase === 'phase-production-build') {
+    return nextConfig;
+  }
+
   if (
     phase === 'phase-production-server' &&
     process.env.ENVIRONMENT === 'production'
