@@ -1,16 +1,15 @@
 /** @type {import('next').NextConfig} */
 
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { drizzle } = require('drizzle-orm/node-postgres');
 const { migrate } = require('drizzle-orm/node-postgres/migrator');
 const { resolve } = require('node:path');
-
 const { Client } = require('pg');
 
-
-const nextConfig = {}
+const nextConfig = {};
 
 module.exports = async (phase) => {
-  if(phase === 'phase-production-build') {
+  if (phase === 'phase-production-build') {
     return nextConfig;
   }
 
@@ -18,13 +17,13 @@ module.exports = async (phase) => {
     phase === 'phase-production-server' &&
     process.env.ENVIRONMENT === 'production'
   ) {
-    console.log(`Retrieving secrets from AWS SSM Parameter Store...`);
+    console.log('Retrieving secrets from AWS SSM Parameter Store...');
     // TODO: Get secrets code
-    console.log(`Successfully updated process.env with secrets`);
+    console.log('Successfully updated process.env with secrets');
   }
 
   console.log('Running migrations...');
-  await migrateLatest()
+  await migrateLatest();
   console.log('Migrations completed successfully');
 
   return nextConfig;
@@ -36,9 +35,11 @@ async function migrateLatest() {
     connectionString: process.env.DATABASE_URL,
   });
 
-  await client.connect()
-  const db = drizzle(client)
-  await migrate(db, { migrationsFolder: resolve(__dirname, 'src', 'db', 'migrations') });
+  await client.connect();
+  const db = drizzle(client);
+  await migrate(db, {
+    migrationsFolder: resolve(__dirname, 'src', 'db', 'migrations'),
+  });
   console.log('Migrations completed successfully');
   client.end();
 }
