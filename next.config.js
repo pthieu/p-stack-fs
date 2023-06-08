@@ -1,45 +1,54 @@
 /** @type {import('next').NextConfig} */
 
 /* eslint-disable @typescript-eslint/no-var-requires */
-const { drizzle } = require('drizzle-orm/node-postgres');
-const { migrate } = require('drizzle-orm/node-postgres/migrator');
-const { resolve } = require('node:path');
-const { Client } = require('pg');
 
-const nextConfig = {};
+const nextConfig = {
+  experimental: {
+    instrumentationHook: true,
+  },
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      const NODE_PACKAGES = [
+        'child_process',
+        'crypto',
+        'fs',
+        'http',
+        'https',
+        'net',
+        'os',
+        'path',
+        'process',
+        'stream',
+        'tls',
+        'util',
+        'zlib',
+      ];
 
-module.exports = async (phase) => {
-  if (phase === 'phase-production-build') {
-    return nextConfig;
-  }
+      const externals = NODE_PACKAGES.reduce((acc, package) => {
+        acc[package] = false;
+        acc[`node:${package}`] = false;
+        return acc;
+      }, {});
 
-  if (
-    phase === 'phase-production-server' &&
-    process.env.ENVIRONMENT === 'production'
-  ) {
-    console.log('Retrieving secrets from AWS SSM Parameter Store...');
-    // TODO: Get secrets code
-    console.log('Successfully updated process.env with secrets');
-  }
-
-  console.log('Running migrations...');
-  await migrateLatest();
-  console.log('Migrations completed successfully');
-
-  return nextConfig;
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        ...externals,
+      };
+    }
+    return config;
+  },
 };
 
-async function migrateLatest() {
-  console.log('Running migrations...');
-  const client = new Client({
-    connectionString: process.env.DATABASE_URL,
-  });
+module.exports = async (...args) => {
+  // XXX(Phong): apparently if we have a plugin, it might be trying to import
+  // node packages, which will fail in the browser and the above `webpack`
+  // config won't handle them all
 
-  await client.connect();
-  const db = drizzle(client);
-  await migrate(db, {
-    migrationsFolder: resolve(__dirname, 'src', 'db', 'migrations'),
-  });
-  console.log('Migrations completed successfully');
-  client.end();
-}
+  const plugins = [];
+  return plugins.reduce((config, plugin) => {
+    const appliedPlugin = plugin(config);
+    return typeof appliedPlugin === 'function'
+      ? appliedPlugin(...args)
+      : appliedPlugin;
+  }, nextConfig);
+};
