@@ -1,0 +1,14 @@
+# For testing on local only, will need another docker-compose file for deploy
+version: '3.6'
+name: ts-api
+services:
+  service:
+    image: ts-next-pg
+    container_name: ts-next-pg
+    restart: always
+    ports:
+      - 3000:80
+    env_file:
+      - .env
+    environment:
+      - PORT=80

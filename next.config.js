@@ -1,8 +1,7 @@
 /** @type {import('next').NextConfig} */
 
-/* eslint-disable @typescript-eslint/no-var-requires */
-
 const nextConfig = {
+  output: 'standalone',
   experimental: {
     instrumentationHook: true,
   },
@@ -39,16 +38,6 @@ const nextConfig = {
   },
 };
 
-module.exports = async (...args) => {
-  // XXX(Phong): apparently if we have a plugin, it might be trying to import
-  // node packages, which will fail in the browser and the above `webpack`
-  // config won't handle them all
-
-  const plugins = [];
-  return plugins.reduce((config, plugin) => {
-    const appliedPlugin = plugin(config);
-    return typeof appliedPlugin === 'function'
-      ? appliedPlugin(...args)
-      : appliedPlugin;
-  }, nextConfig);
+module.exports = async () => {
+  return nextConfig;
 };
