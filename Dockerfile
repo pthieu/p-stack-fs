@@ -52,25 +52,12 @@ RUN adduser --system --uid 1001 nextjs
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder /app/src/db/ ./db
-# COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next/standalone ./env
 COPY --from=builder /app/.next/static ./.next/static
-COPY package.json package-lock.json* pnpm-lock.yaml* ./
+COPY --from=builder /app/src/db/migrations ./migrations
 
 COPY --from=builder --chown=nextjs:nodejs /app/docker-entrypoint.sh ./
-
-# If we keep `package.json`, `pnpm i <package>` seems to install everything
-RUN mv package.json package.json.bak
-RUN npm i -g pnpm
-# For some reason, node_modules gets replaced if we install locally so we
-# install globally and the global path must be in PATH
-# We could also install next/react/react-dom but we want to maintain the version
-# and also their dependencies bloat the image
-ENV PNPM_HOME=/usr/local/bin
-RUN pnpm add -g vite-node drizzle-kit
-RUN mv package.json.bak package.json
 
 USER nextjs
 
@@ -79,6 +66,6 @@ EXPOSE 80
 ENV PORT 80
 
 ENTRYPOINT [ "sh", "docker-entrypoint.sh" ]
-CMD ["pnpm", "run", "serve:prod"]
+CMD ["npm", "run", "serve:prod"]
 # For debugging, keeps container alive
 # CMD ["tail", "-f", "/dev/null"]

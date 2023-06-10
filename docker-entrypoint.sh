@@ -1,4 +1,7 @@
 #!/bin/bash
+# `set -e` causes the script to exit as soon as one command returns a non-zero
+# so if the anything fails, the service doesn't run and the container stops
+set -e
 
 ssm_available() {
   if [ -z ${SSM_BASE_PATH+x} ]; then
@@ -26,8 +29,6 @@ main() {
     echo "Info: Loading SSM Parameters" >&2
     exec_with_ssm_parameters "$@"
   fi
-
-  # npm run migrate
 
   echo "Info: Starting ..." >&2
   exec "$@"

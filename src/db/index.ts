@@ -1,5 +1,3 @@
-// import { Pool } from 'pg';
-
 import { PostgresJsDatabase, drizzle } from 'drizzle-orm/postgres-js';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
 import { resolve } from 'node:path';
@@ -9,7 +7,6 @@ import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-// let db: ReturnType<typeof drizzle>;
 let db: PostgresJsDatabase;
 export async function createDb() {
   if (db) {
@@ -25,7 +22,11 @@ export async function createDb() {
 export async function migrateLatest() {
   console.log('Running migrations...');
   const db = await createDb();
-  const dbDir = resolve(__dirname, 'migrations');
+  // XXX(Phong): if you change `process.cwd()`, you need to change Dockerfile
+  const dbDir = resolve(
+    process.env.NODE_ENV === 'production' ? process.cwd() : __dirname,
+    'migrations',
+  );
   await migrate(db, {
     migrationsFolder: dbDir,
   });

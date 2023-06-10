@@ -1,0 +1,3 @@
+import { migrateLatest } from '.';
+
+migrateLatest();
