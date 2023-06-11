@@ -1,10 +1,11 @@
 # TODO
 
-- [ ] Add AWS SSM Params into secret grab, test
 - [ ] Add Chakra UI (client only)
 - [ ] Look into Chakra UI Ark
   - [ ] Panda is their upcoming replacement of Chakra
+- [ ] Look into docker layer caching to improve build speed
 - [ ] SSM_BATH_PATH requires a trailing slash, figure out how to handle that case
+- [x] Add AWS SSM Params into secret grab
 
 
 # Stack

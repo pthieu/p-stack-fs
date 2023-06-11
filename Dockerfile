@@ -1,3 +1,5 @@
+ARG ALPINE_VERSION=3.17
+
 FROM node:20-alpine AS base
 
 # Install dependencies only when needed
@@ -6,7 +8,6 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Install dependencies based on the preferred package manager
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
 # RUN \
 #   if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
@@ -33,18 +34,15 @@ ENV NEXT_TELEMETRY_DISABLED 1
 RUN npm i -g pnpm
 RUN pnpm build
 
-# If using npm comment out above and use below instead
-# RUN npm run build
 
 # Production image, copy all the files and run next
-FROM alpine AS runner
+FROM alpine:${ALPINE_VERSION} AS runner
 RUN apk add --no-cache --update nodejs
-RUN apk add --no-cache aws-cli
 RUN apk add --no-cache jq
+RUN apk add --no-cache aws-cli
 
 WORKDIR /app
 
-ENV NODE_ENV production
 # Uncomment the following line in case you want to disable telemetry during runtime.
 ENV NEXT_TELEMETRY_DISABLED 1
 
