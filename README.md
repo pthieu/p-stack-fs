@@ -4,6 +4,7 @@
 - [ ] Add Chakra UI (client only)
 - [ ] Look into Chakra UI Ark
   - [ ] Panda is their upcoming replacement of Chakra
+- [ ] SSM_BATH_PATH requires a trailing slash, figure out how to handle that case
 
 
 # Stack

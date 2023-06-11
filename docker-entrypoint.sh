@@ -1,6 +1,6 @@
 #!/bin/bash
 # Cause the script to exit as soon as one command returns a non-zero
-# so if the anything fails, the service doesn't run and the container stops
+# so if anything fails, the service doesn't run and the container stops
 set -e
 
 ssm_available() {
@@ -12,8 +12,8 @@ ssm_available() {
 }
 
 get_ssm_params() {
-  aws ssm get-parameters-by-path --no-paginate --path ${SSM_BASE_PATH} --with-decryption --query Parameters | \
-  jq -r 'map("\(.Name | sub("'${SSM_BASE_PATH}'";""))=\(.Value)") | join("\n")'
+  aws ssm get-parameters-by-path --no-paginate --path "${SSM_BASE_PATH}" --with-decryption --query Parameters | \
+  jq -r 'map("\(.Name | sub("'"${SSM_BASE_PATH}"'";""))=\(.Value | @sh)") | join("\n")'
 }
 
 exec_with_ssm_parameters() {
@@ -24,10 +24,10 @@ exec_with_ssm_parameters() {
     exit 1
   fi
 
-  for parameter in $params; do
+  while IFS= read -r parameter; do
     echo "Info: Exporting parameter ${parameter%%=*}"
-    export ${parameter}
-  done
+    export "${parameter}"
+  done < <(printf '%s\n' "$params")
 
   exec "$@"
 }
