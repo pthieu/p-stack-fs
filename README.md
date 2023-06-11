@@ -1,6 +1,9 @@
 # TODO
 
 - [ ] Add AWS SSM Params into secret grab, test
+- [ ] Add Chakra UI (client only)
+- [ ] Look into Chakra UI Ark
+  - [ ] Panda is their upcoming replacement of Chakra
 
 
 # Stack

@@ -38,8 +38,9 @@ RUN pnpm build
 
 # Production image, copy all the files and run next
 FROM alpine AS runner
-RUN apk add --update nodejs
-RUN apk add --update npm
+RUN apk add --no-cache --update nodejs
+RUN apk add --no-cache aws-cli
+RUN apk add --no-cache jq
 
 WORKDIR /app
 
@@ -66,6 +67,6 @@ EXPOSE 80
 ENV PORT 80
 
 ENTRYPOINT [ "sh", "docker-entrypoint.sh" ]
-CMD ["npm", "run", "serve:prod"]
+CMD ["node", "server.js"]
 # For debugging, keeps container alive
 # CMD ["tail", "-f", "/dev/null"]

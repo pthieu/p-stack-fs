@@ -1,5 +1,5 @@
 #!/bin/bash
-# `set -e` causes the script to exit as soon as one command returns a non-zero
+# Cause the script to exit as soon as one command returns a non-zero
 # so if the anything fails, the service doesn't run and the container stops
 set -e
 
@@ -17,10 +17,18 @@ get_ssm_params() {
 }
 
 exec_with_ssm_parameters() {
-  for parameter in `get_ssm_params`; do
+  local params=$(get_ssm_params)
+
+  if [ -z "$params" ]; then
+    echo "Error: No SSM parameters found"
+    exit 1
+  fi
+
+  for parameter in $params; do
     echo "Info: Exporting parameter ${parameter%%=*}"
     export ${parameter}
   done
+
   exec "$@"
 }
 

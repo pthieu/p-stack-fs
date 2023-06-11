@@ -8,7 +8,6 @@
     "start": "next start",
     "lint": "next lint",
     "serve": "node .next/standalone/server.js",
-    "serve:prod": "node server.js",
     "migrate:create": "drizzle-kit generate:pg --config=drizzle.config.ts --custom",
     "migrate:generate": "drizzle-kit generate:pg --config=drizzle.config.ts",
     "migrate:drop": "drizzle-kit drop --config=drizzle.config.ts",
