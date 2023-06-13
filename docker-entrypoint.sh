@@ -16,6 +16,7 @@ get_ssm_params() {
   jq -r 'map("\(.Name | sub("'"${SSM_BASE_PATH}"'";""))=\(.Value | @sh)") | join("\n")'
 }
 
+# AWS CLI method, requires aws-cli installed
 exec_with_ssm_parameters() {
   local params=$(get_ssm_params)
 
@@ -32,10 +33,18 @@ exec_with_ssm_parameters() {
   exec "$@"
 }
 
+# Use this or the aws cli method if you don't mind a larger image
+# Read: https://github.com/pthieu/go-aws-get-parameter
+export_ssm_params_go() {
+  eval $(./ssm_get_parameter --path ${SSM_BASE_PATH})
+  exec "$@"
+}
+
 main() {
   if ssm_available; then
     echo "Info: Loading SSM Parameters" >&2
-    exec_with_ssm_parameters "$@"
+    # exec_with_ssm_parameters "$@"
+    export_ssm_params_go "$@"
   fi
 
   echo "Info: Starting ..." >&2

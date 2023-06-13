@@ -37,14 +37,22 @@ RUN pnpm build
 
 # Production image, copy all the files and run next
 FROM alpine:${ALPINE_VERSION} AS runner
-RUN apk add --no-cache --update nodejs
-RUN apk add --no-cache jq
-RUN apk add --no-cache aws-cli
 
 WORKDIR /app
 
 # Uncomment the following line in case you want to disable telemetry during runtime.
 ENV NEXT_TELEMETRY_DISABLED 1
+
+RUN apk add --no-cache --update nodejs
+# XXX(Phong): use below if you want AWS CLI V1 to get SSM Params
+# RUN apk add --no-cache jq
+# RUN apk add --no-cache aws-cli
+# XXX(Phong): Get AWS SSM Params using a Go binary, reduces image size
+# Note: this might get a "8: not found" error if not using the USER nextjs, has
+# to do with something with the ca-certificates
+RUN apk update && apk add --no-cache ca-certificates && update-ca-certificates
+RUN wget https://github.com/pthieu/go-aws-get-parameter/raw/master/ssm_get_parameter
+RUN ["chmod", "+x", "./ssm_get_parameter"]
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
