@@ -5,7 +5,6 @@
 - [ ] Look into Chakra UI Ark
   - [ ] Panda is their upcoming replacement of Chakra
 - [ ] Look into docker layer caching to improve build speed
-- [ ] Think about checking in `.vscode`
 - [ ] Figure out how to support migrations with `pn serve` local case (or just give up and use docker)
 - [x] Add AWS SSM Params injection from docker
 
