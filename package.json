@@ -14,7 +14,6 @@
     "migrate:check": "drizzle-kit check:pg --config=drizzle.config.ts"
   },
   "dependencies": {
-    "@aws-sdk/client-ssm": "^3.350.0",
     "axios": "^1.4.0",
     "drizzle-orm": "^0.26.5",
     "next": "13.4.4",
