@@ -16,6 +16,9 @@ updates:
       - "pthieu"
     schedule:
       interval: "weekly"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-patch"]
 
   # Enable version updates for Docker
   - package-ecosystem: "docker"
