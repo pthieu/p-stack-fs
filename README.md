@@ -1,11 +1,11 @@
 # TODO
 
 - [ ] Add CircleCI config
-- [ ] Add Chakra UI (client only) or Tamagui
 - [ ] Look into Chakra UI Ark
   - [ ] Panda is their upcoming replacement of Chakra
 - [ ] Look into docker layer caching to improve build speed
 - [ ] Figure out how to support migrations with `pn serve` local case (or just give up and use docker)
+- [x] Add Chakra UI
 - [x] Add AWS SSM Params injection from docker
 
 

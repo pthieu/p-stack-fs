@@ -14,8 +14,14 @@
     "migrate:check": "drizzle-kit check:pg --config=drizzle.config.ts"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.0.19",
+    "@chakra-ui/next-js": "^2.1.4",
+    "@chakra-ui/react": "^2.7.0",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "axios": "^1.4.0",
     "drizzle-orm": "^0.26.5",
+    "framer-motion": "^10.12.16",
     "next": "13.4.4",
     "postgres": "^3.3.5",
     "react": "18.2.0",
