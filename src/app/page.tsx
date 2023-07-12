@@ -6,7 +6,7 @@ import Image from 'next/image';
 export default function Home() {
   return (
     <main>
-      <Box height={'100vh'}>
+      <Box>
         <AbsoluteCenter>
           <Image
             src="/next.svg"

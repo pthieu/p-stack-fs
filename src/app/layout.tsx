@@ -1,5 +1,13 @@
 import { Providers } from './providers';
 import NavBar from '~/components/NavBar';
+import { css } from '~/styles/css';
+
+import './global.css';
+
+export const metadata = {
+  title: 'ts-next-pg-boilerplate',
+  description: 'A boilerplate for TypeScript, Next.js, and PostgreSQL',
+};
 
 export default function RootLayout({
   children,
@@ -10,8 +18,10 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Providers>
-          <NavBar />
-          {children}
+          <div className={css({ minH: '100vh' })}>
+            <NavBar />
+            {children}
+          </div>
         </Providers>
       </body>
     </html>
