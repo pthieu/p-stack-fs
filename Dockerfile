@@ -16,7 +16,7 @@ COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
 #   else echo "Lockfile not found." && exit 1; \
 #   fi
 
-RUN npm install -g pnpm && pnpm i --prod --frozen-lockfile
+RUN npm i -g pnpm && pnpm i --prod --frozen-lockfile
 
 # Rebuild the source code only when needed
 FROM base AS builder
@@ -33,7 +33,6 @@ ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN npm i -g pnpm
 RUN pnpm build
-
 
 # Production image, copy all the files and run next
 FROM alpine:${ALPINE_VERSION} AS runner

@@ -9,6 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "serve": "node .next/standalone/server.js",
+    "migrate": "tsx src/db/migrate.ts --config=drizzle.config.ts",
     "migrate:create": "drizzle-kit generate:pg --config=drizzle.config.ts --custom",
     "migrate:generate": "drizzle-kit generate:pg --config=drizzle.config.ts",
     "migrate:drop": "drizzle-kit drop --config=drizzle.config.ts",
@@ -43,6 +44,7 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-prettier": "^5.0.0",
     "prettier": "^3.0.0",
+    "tsx": "^3.12.7",
     "typescript": "5.1.6"
   }
 }
