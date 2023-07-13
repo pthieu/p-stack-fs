@@ -9,6 +9,7 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+COPY panda.config.ts ./
 
 RUN npm i -g pnpm && pnpm i --prod --frozen-lockfile
 
@@ -17,6 +18,9 @@ FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+# XXX(Phong): Panda is built in the `prepare` command, which runs after
+# `install`, so we copy it over here for building
+COPY --from=deps /app/src/styles ./src/styles 
 
 RUN ["chmod", "+x", "./docker-entrypoint.sh"]
 
