@@ -6,7 +6,7 @@ export default defineConfig({
   include: [
     './src/components/**/*.{ts,tsx}',
     './src/app/**/*.{ts,tsx}',
-    './pages/**/*.{ts,tsx}',
+    './src/pages/**/*.{ts,tsx}',
   ],
   exclude: [],
   theme: {

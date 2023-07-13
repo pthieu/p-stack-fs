@@ -20,7 +20,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 # XXX(Phong): Panda is built in the `prepare` command, which runs after
 # `install`, so we copy it over here for building
-COPY --from=deps /app/src/styles ./src/styles 
+COPY --from=deps /app/src/styles ./src/styles
 
 RUN ["chmod", "+x", "./docker-entrypoint.sh"]
 
@@ -30,7 +30,7 @@ RUN ["chmod", "+x", "./docker-entrypoint.sh"]
 ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN npm i -g pnpm
-RUN pnpm build
+RUN pnpm run build
 
 # Production image, copy all the files and run next
 FROM alpine:${ALPINE_VERSION} AS runner

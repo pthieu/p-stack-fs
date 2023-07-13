@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+// eslint-disable-next-line
+const path = require('path');
 
 const nextConfig = {
   output: 'standalone',
@@ -34,6 +36,11 @@ const nextConfig = {
         ...externals,
       };
     }
+
+    // XXX(Phong): not sure why it doesn't just grab from tsconfig but this
+    // is at the webpack level, so maybe after tsconfig is compiled. Anyway,
+    // it doesn't read the tsconfig.json path aliases, so we define it here
+    config.resolve.alias['~'] = path.join(__dirname, 'src');
     return config;
   },
 };
