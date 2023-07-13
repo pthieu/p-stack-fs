@@ -1,10 +1,10 @@
 # For testing on local only, will need another docker-compose file for deploy
 version: '3.6'
-name: ts-api
+name: p-stack-fs
 services:
   service:
-    image: ts-next-pg
-    container_name: ts-next-pg
+    image: p-stack-fs
+    container_name: p-stack-fs
     restart: always
     ports:
       - 3000:80

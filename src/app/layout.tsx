@@ -5,7 +5,7 @@ import { css } from '~/styles/css';
 import './global.css';
 
 export const metadata = {
-  title: 'ts-next-pg-boilerplate',
+  title: 'p-stack-fs',
   description: 'A boilerplate for TypeScript, Next.js, and PostgreSQL',
 };
 

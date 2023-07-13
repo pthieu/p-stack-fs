@@ -58,7 +58,7 @@ Running `pnpm build` then `pnpm serve` will not currently run migrations, becaus
 ## Docker
 Set up your `.env.docker` based on `.env.example`, you'll have to use `host.docker.internal` for the DB host instead of `localhost`, then:
 ```
-docker build -t ts-next-pg . && docker-compose up -d
+docker build -t p-stack-fs . && docker-compose up -d
 ```
 
 Clean up after with:
