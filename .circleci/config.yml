@@ -30,19 +30,19 @@ workflows:
       - lint_and_compile:
           requires:
             - build_workspace
-      # - wait_for_approval:
-      #     type: approval
-      #     requires:
-      #       - lint_and_compile
-      # - run_migrations:
-      #     requires:
-      #       - wait_for_approval
-      # - build_and_push:
-      #     context:
-      #       - global
-      #     repo: p-stack-fs
-      #     requires:
-      #       - wait_for_approval
+      - wait_for_approval:
+          type: approval
+          requires:
+            - lint_and_compile
+      - run_migrations:
+          requires:
+            - wait_for_approval
+      - build_and_push:
+          context:
+            - global
+          repo: p-stack-fs
+          requires:
+            - wait_for_approval
 
 jobs:
   build_workspace:
