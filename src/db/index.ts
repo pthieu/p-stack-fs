@@ -12,7 +12,7 @@ export async function createDb() {
   if (db) {
     return db;
   }
-  const dbUrl: string = process.env.DATABASE_URL || '';
+  const dbUrl: string = process.env.DATABASE_URL!;
   const client = postgres(dbUrl);
 
   db = drizzle(client);
@@ -21,18 +21,22 @@ export async function createDb() {
 
 export async function migrateLatest() {
   console.log('Running migrations...');
-  const dbUrl: string = process.env.DATABASE_URL || '';
-  const client = postgres(dbUrl, { max: 1 });
+  const dbUrl: string = process.env.DATABASE_URL!;
+  // XXX(Phong): postgres v15 needs ssl=require, disable this on local postgres
+  const config: Record<string, unknown> = {
+    max: 1,
+  };
+  if (process.env.NODE_ENV === 'production') {
+    config.ssl = 'require';
+  }
+  const client = postgres(dbUrl, config);
 
   const db = drizzle(client);
   // XXX(Phong): if you change `process.cwd()`, you need to change Dockerfile
-  const dbDir = resolve(
-    process.env.NODE_ENV === 'production' ? process.cwd() : __dirname,
-    'migrations',
-  );
+  const dbDir = resolve(__dirname, 'migrations');
   await migrate(db, {
     migrationsFolder: dbDir,
   });
   console.log('Migrations completed successfully');
-  client.end();
+  client.end(); // XXX(Phong): postgres-js
 }
