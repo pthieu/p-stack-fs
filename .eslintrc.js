@@ -25,7 +25,7 @@ module.exports = {
     'plugin:prettier/recommended', // Make sure this is always the last element in the array.
   ],
   plugins: ['@typescript-eslint'],
-  ignorePatterns: '**/dist/*.js',
+  ignorePatterns: ['**/dist/*.js', 'src/styles/**/*'],
   rules: {
     '@typescript-eslint/no-unused-vars': [
       'warn',
