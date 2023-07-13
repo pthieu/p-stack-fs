@@ -9,12 +9,6 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
-# RUN \
-#   if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-#   elif [ -f package-lock.json ]; then npm ci; \
-#   elif [ -f pnpm-lock.yaml ]; then npm install -g pnpm && pnpm i --frozen-lockfile; \
-#   else echo "Lockfile not found." && exit 1; \
-#   fi
 
 RUN npm i -g pnpm && pnpm i --prod --frozen-lockfile
 
@@ -43,9 +37,6 @@ WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN apk add --no-cache --update nodejs
-# XXX(Phong): use below if you want AWS CLI V1 to get SSM Params
-# RUN apk add --no-cache jq
-# RUN apk add --no-cache aws-cli
 # XXX(Phong): Get AWS SSM Params using a Go binary, reduces image size
 # Note: this might get a "8: not found" error if not using the USER nextjs, has
 # to do with something with the ca-certificates
