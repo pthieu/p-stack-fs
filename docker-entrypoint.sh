@@ -4,7 +4,7 @@
 set -e
 
 ssm_available() {
-  if [ -z ${SSM_BASE_PATH+x} ]; then
+  if [ -z "$SSM_BASE_PATH" ]; then
     return 1
   fi
 

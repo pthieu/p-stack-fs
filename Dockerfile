@@ -1,4 +1,6 @@
 ARG ALPINE_VERSION=3.17
+# If ARG is named the same as the ENV var, will get replaed by it
+ARG ARG_SSM_BASE_PATH
 
 FROM node:20-alpine AS base
 
@@ -34,9 +36,11 @@ RUN pnpm run build
 
 # Production image, copy all the files and run next
 FROM alpine:${ALPINE_VERSION} AS runner
-
 WORKDIR /app
 
+ARG ARG_SSM_BASE_PATH
+ENV SSM_BASE_PATH=$ARG_SSM_BASE_PATH
+RUN echo "SSM_BASE_PATH is set to: $SSM_BASE_PATH"
 # Uncomment the following line in case you want to disable telemetry during runtime.
 ENV NEXT_TELEMETRY_DISABLED 1
 
@@ -45,7 +49,7 @@ RUN apk add --no-cache --update nodejs
 # Note: this might get a "8: not found" error if not using the USER nextjs, has
 # to do with something with the ca-certificates
 RUN apk update && apk add --no-cache ca-certificates && update-ca-certificates
-RUN wget https://github.com/pthieu/go-aws-get-parameter/raw/master/ssm_get_parameter
+RUN wget https://github.com/pthieu/go-aws-get-parameter/releases/download/v1.0.0-arm64/ssm_get_parameter
 RUN ["chmod", "+x", "./ssm_get_parameter"]
 
 RUN addgroup --system --gid 1001 nodejs
@@ -60,6 +64,7 @@ COPY --from=builder /app/.next/static ./.next/static
 
 COPY --from=builder --chown=nextjs:nodejs /app/docker-entrypoint.sh ./
 
+# Uncomment this if you want to lock down the filesystem
 USER nextjs
 
 EXPOSE 80
