@@ -1,8 +1,6 @@
 # TODO
 
 - [ ] Add CircleCI config
-- [ ] Look into Chakra UI Ark
-  - [ ] Panda is their upcoming replacement of Chakra
 - [ ] Look into docker layer caching to improve build speed
 - [ ] Figure out how to support migrations with `pn serve` local case (or just give up and use docker)
 - [x] Add Chakra UI

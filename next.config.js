@@ -4,9 +4,6 @@ const path = require('path');
 
 const nextConfig = {
   output: 'standalone',
-  experimental: {
-    instrumentationHook: true,
-  },
   webpack: (config, { isServer }) => {
     if (!isServer) {
       const NODE_PACKAGES = [

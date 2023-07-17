@@ -1,29 +1,29 @@
-import { Providers } from './providers';
-import NavBar from '~/components/NavBar';
-import { css } from '~/styles/css';
+import type { Metadata } from 'next';
+import React from 'react';
 
-import './global.css';
+import { ThemeProvider } from '~/components/theme-provider';
+import '~/styles/globals.css';
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'p-stack-fs',
   description: 'A boilerplate for TypeScript, Next.js, and PostgreSQL',
 };
 
-export default function RootLayout({
-  children,
-}: {
+interface RootLayoutProps {
   children: React.ReactNode;
-}) {
+}
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en">
-      <body>
-        <Providers>
-          <div className={css({ minH: '100vh' })}>
-            <NavBar />
+    <>
+      <html lang="en" suppressHydrationWarning>
+        <head />
+        <body>
+          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
             {children}
-          </div>
-        </Providers>
-      </body>
-    </html>
+          </ThemeProvider>
+        </body>
+      </html>
+    </>
   );
 }
