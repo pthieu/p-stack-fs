@@ -48,9 +48,6 @@ RUN apk update && apk add --no-cache ca-certificates && update-ca-certificates
 RUN wget https://github.com/pthieu/go-aws-get-parameter/releases/download/v1.0.0-arm64/ssm_get_parameter
 RUN ["chmod", "+x", "./ssm_get_parameter"]
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder /app/.next/standalone ./
@@ -58,7 +55,7 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/static ./.next/static
 # COPY --from=builder /app/src/db/migrations ./migrations
 
-COPY --from=builder --chown=nextjs:nodejs /app/docker-entrypoint.sh ./
+COPY --from=builder /app/docker-entrypoint.sh ./
 
 # Uncomment this if you want to lock down the filesystem
 USER nextjs
