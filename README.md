@@ -1,6 +1,20 @@
 # TODO
 
-- [ ] Add CircleCI config
+- [ ] standlone react app needs to install sharp:
+  - Error: 'sharp' is required to be installed in standalone mode for the image optimization to function correctly. Read more at: https://nextjs.org/docs/messages/sharp-missing-in-production
+- [ ] EACCES issue, prob beucase we're using a nextjs user on docker, change this:
+  Failed to write image to cache fLg+7lRpUwPwjLk5SFySo+JwrcjMsgQqRw1Ro7cjuS0= [Error: EACCES: permission denied, mkdir '/app/.next/cache'] {
+    errno: -13,
+    code: 'EACCES',
+    syscall: 'mkdir',
+    path: '/app/.next/cache
+  }
+- [ ] add immer
+- [ ] add auth middleware (copy from strandler)
+- [ ] add lint and compile in dev branch only, copy to strandler to opensource
+- [ ] add google analytics
+- [ ] Add toaster to main thing
+- [ ] Add zustand and a store?
 - [ ] Look into docker layer caching to improve build speed
 - [ ] Figure out how to support migrations with `pn serve` local case (or just give up and use docker)
 - [x] Add Chakra UI

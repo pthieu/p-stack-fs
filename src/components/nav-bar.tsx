@@ -6,7 +6,7 @@ export default function NavBar() {
   return (
     <div className={cn('flex justify-between align-middle py-2 px-4 border-b')}>
       <div className="flex items-center">Logo</div>
-      <div className={cn('flex align-middle gap-1')}>
+      <div className={cn('flex items-center gap-1')}>
         <ModeToggle />
         <NavMenu />
       </div>
