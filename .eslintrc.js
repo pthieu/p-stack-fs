@@ -79,5 +79,6 @@ module.exports = {
         usePrettierrc: false,
       },
     ],
+    'react-hooks/exhaustive-deps': 'off',
   },
 };
