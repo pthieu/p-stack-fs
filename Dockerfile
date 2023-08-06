@@ -57,9 +57,6 @@ COPY --from=builder /app/.next/static ./.next/static
 
 COPY --from=builder /app/docker-entrypoint.sh ./
 
-# Uncomment this if you want to lock down the filesystem
-USER nextjs
-
 EXPOSE 80
 
 ENV PORT 80

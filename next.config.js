@@ -4,6 +4,17 @@ const path = require('path');
 
 const nextConfig = {
   output: 'standalone',
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+        port: '',
+        pathname: '**',
+      },
+    ],
+    unoptimized: true,
+  },
   webpack: (config, { isServer }) => {
     if (!isServer) {
       const NODE_PACKAGES = [
