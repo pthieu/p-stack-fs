@@ -1,3 +1,5 @@
+import { ClerkProvider } from '@clerk/nextjs';
+import { dark } from '@clerk/themes';
 import type { Metadata } from 'next';
 import React from 'react';
 
@@ -15,7 +17,28 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <>
+    <ClerkProvider
+      signInUrl="/login"
+      signUpUrl="/logout"
+      afterSignInUrl="/home"
+      // should create user in the DB, redirect user to /setup
+      afterSignUpUrl="/post-signup"
+      appearance={{
+        baseTheme: dark,
+        variables: {
+          colorPrimary: 'transparent',
+          colorBackground: 'transparent',
+        },
+        elements: {
+          formButtonPrimary:
+            'bg-foreground text-background hover:text-inherit hover:bg-inherit hover:border hover:border-inherit hover:border-solid',
+          card: 'border-inherit border border-solid',
+          socialButtonsBlockButton: 'border-inherit border border-solid',
+          formFieldInput: 'bg-inherit border-inherit border border-solid',
+          footerActionLink: 'text-inherit hover:text-foreground',
+        },
+      }}
+    >
       <html lang="en" suppressHydrationWarning>
         <head />
         <body suppressHydrationWarning>
@@ -24,6 +47,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
           </ThemeProvider>
         </body>
       </html>
-    </>
+    </ClerkProvider>
   );
 }
