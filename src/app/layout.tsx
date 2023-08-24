@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import React from 'react';
 
 import { ThemeProvider } from '~/components/theme-provider';
+import { Toaster } from '~/components/ui/toaster';
 import '~/styles/globals.css';
 
 export const metadata: Metadata = {
@@ -43,6 +44,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <head />
         <body suppressHydrationWarning>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+            <Toaster />
             {children}
           </ThemeProvider>
         </body>
