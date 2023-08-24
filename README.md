@@ -1,5 +1,8 @@
 # TODO
 
+- [ ] add waitlist sign up
+- [ ] default to system theme, toggle to light theme, toggle to dark available? maybe default to system and somehow detect if toggle should go to dark or light?
+- [ ] add waitlist landing and email capture in db
 - [ ] standlone react app needs to install sharp:
   - Error: 'sharp' is required to be installed in standalone mode for the image optimization to function correctly. Read more at: https://nextjs.org/docs/messages/sharp-missing-in-production
 - [ ] EACCES issue, prob beucase we're using a nextjs user on docker, change this:
