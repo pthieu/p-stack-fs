@@ -59,6 +59,7 @@ module.exports = {
     'import/newline-after-import': [2],
     'import/no-named-as-default': 'off',
     'import/no-anonymous-default-export': 'off',
+    'import/named': 'off',
     'linebreak-style': ['error', 'unix'],
     'no-console': 'off',
     quotes: [2, 'single', { avoidEscape: true }],

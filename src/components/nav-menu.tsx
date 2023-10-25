@@ -1,4 +1,7 @@
+'use client';
+import { useClerk } from '@clerk/nextjs';
 import { CreditCard, LogOut, Menu, Settings, User } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 import { Button } from './ui/button';
 import {
@@ -11,6 +14,9 @@ import {
 } from './ui/dropdown-menu';
 
 export default function NavMenu() {
+  const { signOut } = useClerk();
+  const router = useRouter();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -34,7 +40,11 @@ export default function NavMenu() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => {
+            signOut(() => router.push('/'));
+          }}
+        >
           <LogOut className="mr-2 h-4 w-4" />
           <span>Log out</span>
         </DropdownMenuItem>

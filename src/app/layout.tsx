@@ -3,6 +3,7 @@ import { dark } from '@clerk/themes';
 import type { Metadata } from 'next';
 import React from 'react';
 
+// import GoogleAnalytics from '~/components/google-analytics';
 import { ThemeProvider } from '~/components/theme-provider';
 import { Toaster } from '~/components/ui/toaster';
 import '~/styles/globals.css';
@@ -23,7 +24,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       signUpUrl="/logout"
       afterSignInUrl="/home"
       // should create user in the DB, redirect user to /setup
-      afterSignUpUrl="/post-signup"
+      afterSignUpUrl="/api/auth/signup"
       appearance={{
         baseTheme: dark,
         variables: {
@@ -42,6 +43,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
     >
       <html lang="en" suppressHydrationWarning>
         <head />
+        {/* {process.env.NODE_ENV === 'production' && (
+          <GoogleAnalytics GA_TRACKING_ID="G-XXXXXXXXXX" />
+        )} */}
         <body suppressHydrationWarning>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
             <Toaster />

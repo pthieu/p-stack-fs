@@ -8,11 +8,17 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 let db: PostgresJsDatabase;
-export async function createDb() {
+export async function createOrGetDb() {
   if (db) {
     return db;
   }
+
   const dbUrl: string = process.env.DATABASE_URL!;
+  const config: Record<string, unknown> = {};
+  if (process.env.NODE_ENV === 'production') {
+    config.ssl = 'require';
+  }
+
   const client = postgres(dbUrl);
 
   db = drizzle(client);
