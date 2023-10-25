@@ -6,6 +6,7 @@ orbs:
 variables:
   - &build-image cimg/node:20.2.0
   - &workspace /home/circleci/project
+  - &ecr-repo p-stack-fs
 
 parameters:
   version-tag:
@@ -37,7 +38,7 @@ workflows:
       - build_and_push:
           context:
             - global
-          repo: p-stack-fs
+          repo: *ecr-repo
           requires:
             - lint_and_compile
             # - wait_for_approval
