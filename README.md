@@ -1,6 +1,13 @@
 # TODO
 
+- [ ] move `~/lib/utils` to `~/lib/shared/utils`
+- [ ] add tailwind sorter plugin
+- [ ] add https://www.npmjs.com/package/eslint-plugin-tailwindcss
+- [ ] move all schema's into one schema/index.ts file, change db/index.ts file to import it and use it for relational queries (easier to have one import and never change)
+- [ ] add migrate:introspect command
+- [ ] figure out how to implement drizzle schema+queries
 - [ ] add waitlist sign up
+- [ ] InferModel to InferSelectModel and InferInsertModel
 - [ ] default to system theme, toggle to light theme, toggle to dark available? maybe default to system and somehow detect if toggle should go to dark or light?
 - [ ] add waitlist landing and email capture in db
 - [ ] standlone react app needs to install sharp:
@@ -45,6 +52,21 @@ pnpm i
 pnpm migrate:generate // generates the migration files
 pnpm dev // starts the server (migrations run from the application)
 ```
+
+## Clerk
+Need to update the session token claims to work with social logins and detect if a user is creating a new account because social login sign-up/sign-in are the same.
+See: [link](https://discord.com/channels/856971667393609759/1158583782891339807/1158813553160097792)
+
+1. Go to `Clerk Dashboard > Sessions > Customize session tokens (edit)`
+2. Add the following:
+```json
+{
+	"email": "{{user.primary_email_address}}",
+	"metadata": "{{user.public_metadata}}"
+}
+```
+
+
 
 # Debugging
 

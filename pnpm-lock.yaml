@@ -111,8 +111,8 @@ dependencies:
     specifier: ^2.30.0
     version: 2.30.0
   drizzle-orm:
-    specifier: ^0.28.4
-    version: 0.28.4(postgres@3.3.5)
+    specifier: ^0.28.6
+    version: 0.28.6(postgres@3.3.5)
   lucide-react:
     specifier: ^0.260.0
     version: 0.260.0(react@18.2.0)
@@ -3289,8 +3289,8 @@ packages:
       - supports-color
     dev: true
 
-  /drizzle-orm@0.28.4(postgres@3.3.5):
-    resolution: {integrity: sha512-BEATAB0g0Y8PKbJHkHLLENlX2DXktO5XyeNyrXB6ktcNkg3dlMfePwB3LodBJkPY6d7GixFF+jvtdZsWjakJBQ==}
+  /drizzle-orm@0.28.6(postgres@3.3.5):
+    resolution: {integrity: sha512-yBe+F9htrlYER7uXgDJUQsTHFoIrI5yMm5A0bg0GiZ/kY5jNXTWoEy4KQtg35cE27sw1VbgzoMWHAgCckUUUww==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
       '@cloudflare/workers-types': '>=3'
