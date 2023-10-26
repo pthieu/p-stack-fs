@@ -9,7 +9,7 @@ export default function NavBarLanding() {
     <div className={cn('flex justify-between align-middle py-2 px-4 border-b')}>
       <div className="flex items-center">Logo</div>
       <div className={cn('flex items-center gap-1')}>
-        <Button>
+        <Button asChild>
           <SignInButton />
         </Button>
         <ModeToggle />

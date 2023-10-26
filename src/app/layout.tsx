@@ -21,23 +21,22 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <ClerkProvider
       signInUrl="/login"
-      signUpUrl="/logout"
+      signUpUrl="/signup"
       afterSignInUrl="/home"
       // should create user in the DB, redirect user to /setup
       afterSignUpUrl="/api/auth/signup"
       appearance={{
-        baseTheme: dark,
         variables: {
-          colorPrimary: 'transparent',
-          colorBackground: 'transparent',
+          // colorPrimary: 'transparent',
+          // colorBackground: 'transparent',
         },
         elements: {
-          formButtonPrimary:
-            'bg-foreground text-background hover:text-inherit hover:bg-inherit hover:border hover:border-inherit hover:border-solid',
-          card: 'border-inherit border border-solid',
-          socialButtonsBlockButton: 'border-inherit border border-solid',
-          formFieldInput: 'bg-inherit border-inherit border border-solid',
-          footerActionLink: 'text-inherit hover:text-foreground',
+          // formButtonPrimary:
+          //   'bg-foreground text-background hover:text-inherit hover:bg-inherit hover:border hover:border-inherit hover:border-solid',
+          // card: 'border-inherit border border-solid',
+          // socialButtonsBlockButton: 'border-inherit border border-solid',
+          // formFieldInput: 'bg-inherit border-inherit border border-solid',
+          // footerActionLink: 'text-inherit hover:text-foreground',
         },
       }}
     >

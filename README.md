@@ -65,7 +65,8 @@ See: [link](https://discord.com/channels/856971667393609759/1158583782891339807/
 	"metadata": "{{user.public_metadata}}"
 }
 ```
-
+3. Go to `Paths``, set Application homepage to `/home` or `/dashboard` or whatever you want otherwise it will keep redirecting the user to `/` if the user is already logged in and you click the login button.
+4. Enable webhooks for user creation and deletion
 
 
 # Debugging

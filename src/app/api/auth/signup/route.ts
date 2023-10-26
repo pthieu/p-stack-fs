@@ -5,15 +5,14 @@ import * as User from '~/db/models/user';
 
 export async function GET(req: Request) {
   const clerkUser = await currentUser();
-
-  const redirectUrl = new URL(req.url);
-  redirectUrl.pathname = '/home';
-
   if (!clerkUser) {
     return redirectToSignIn();
   }
 
+  const redirectUrl = new URL(req.url);
+
   if (clerkUser.publicMetadata.userId) {
+    redirectUrl.pathname = '/home';
     return NextResponse.redirect(redirectUrl.toString());
   }
 
@@ -32,5 +31,6 @@ export async function GET(req: Request) {
     });
   }
 
+  redirectUrl.pathname = '/complete-signup';
   return NextResponse.redirect(redirectUrl.toString());
 }
