@@ -1,7 +1,6 @@
 import { eq } from 'drizzle-orm';
 
 import { createOrGetDb } from '~/db';
-
 import { NewUser, UserTable } from '~/db/schema';
 
 const Table = UserTable;

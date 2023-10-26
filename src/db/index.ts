@@ -7,8 +7,10 @@ import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-let db: PostgresJsDatabase;
-export async function createOrGetDb() {
+import * as schema from './schema';
+
+let db: PostgresJsDatabase<typeof schema>;
+export function createOrGetDb() {
   if (db) {
     return db;
   }
@@ -19,9 +21,9 @@ export async function createOrGetDb() {
     config.ssl = 'require';
   }
 
-  const client = postgres(dbUrl);
+  const client = postgres(dbUrl, config);
 
-  db = drizzle(client);
+  db = drizzle(client, { schema });
   return db;
 }
 

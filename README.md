@@ -1,5 +1,6 @@
 # TODO
 
+- [ ] add /terms and /privacy
 - [ ] move `~/lib/utils` to `~/lib/shared/utils`
 - [ ] add tailwind sorter plugin
 - [ ] add https://www.npmjs.com/package/eslint-plugin-tailwindcss

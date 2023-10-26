@@ -6,10 +6,10 @@ import {
   varchar,
 } from 'drizzle-orm/pg-core';
 
-export const tableName = 'users';
+/* User Table */
 
 export const UserTable = pgTable(
-  tableName,
+  'users',
   {
     id: uuid('id').primaryKey().defaultRandom(),
     email: varchar('email', { length: 512 }).unique().notNull(),
@@ -19,11 +19,10 @@ export const UserTable = pgTable(
   },
   (table) => {
     return {
-      emailIdx: uniqueIndex(`${tableName}_email_idx`).on(table.email),
+      emailIdx: uniqueIndex(`${'users'}_email_idx`).on(table.email),
     };
   },
 );
-
 export const users = UserTable;
 
 export type User = typeof UserTable.$inferSelect;
