@@ -4,6 +4,12 @@ const path = require('path');
 
 const nextConfig = {
   output: 'standalone',
+  env: {
+    NEXT_PUBLIC_CLERK_SIGN_IN_URL: '/login',
+    NEXT_PUBLIC_CLERK_SIGN_UP_URL: '/signup',
+    NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL: '/home',
+    NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL: '/api/auth/signup',
+  },
   images: {
     remotePatterns: [
       {

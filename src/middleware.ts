@@ -1,30 +1,49 @@
-import { authMiddleware, redirectToSignIn } from '@clerk/nextjs';
+import { authMiddleware, currentUser, redirectToSignIn } from '@clerk/nextjs';
 import { NextResponse } from 'next/server';
 
-import { ClerkMetadata } from './types';
+import { ROUTES } from '~/constants';
+import { convertReqUrlToReqHostUrl } from '~/lib/server';
+import { ClerkMetadata } from '~/types';
 
 export default authMiddleware({
-  publicRoutes: ['/', '/login(.*)', '/signup(.*)'],
-  afterAuth(auth, req) {
-    if (!auth.userId && !auth.isPublicRoute) {
-      return redirectToSignIn({ returnBackUrl: req.url });
-    }
-
+  publicRoutes: [
+    '/',
+    `${ROUTES.LOGIN}(.*)`,
+    `${ROUTES.SIGNUP}(.*)`,
+    ROUTES.SIGNUP_COMPLETE_UI,
+    '/api/webhooks(.*)',
+    '/api/internal(.*)',
+  ],
+  async afterAuth(auth, req) {
+    // XXX(Phong): create user if the currently logged-in user does not have
+    // a userId that we issued
     if (
       auth.userId &&
       !(auth?.sessionClaims?.metadata as ClerkMetadata)?.userId &&
       // XXX(Phong): this is a protected route, so we don't want to hit an
       // infinite redirect loop
-      !req.url.match('/api/auth/signup') &&
-      !req.url.match('/complete-signup')
+      !req.url.match(ROUTES.SIGNUP_COMPLETE) &&
+      !req.url.match(ROUTES.SIGNUP_COMPLETE_UI)
     ) {
-      const redirectUrl = new URL(req.url);
-      redirectUrl.pathname = '/api/auth/signup';
+      const clerkUser = await currentUser();
+      const redirectUrl = convertReqUrlToReqHostUrl(req.url, req.headers);
+      if (clerkUser?.publicMetadata?.userId) {
+        // XXX(Phong): means a discrepancy between the user's session, needs to
+        // be updated
+        redirectUrl.pathname = ROUTES.SIGNUP_COMPLETE_UI;
+        return NextResponse.redirect(redirectUrl.toString());
+      }
+
+      redirectUrl.pathname = ROUTES.SIGNUP_COMPLETE;
       return NextResponse.redirect(redirectUrl.toString());
     }
 
-    return NextResponse.next();
+    if (!auth.userId && !auth.isPublicRoute) {
+      const redirectUrl = convertReqUrlToReqHostUrl(req.url, req.headers);
+      return redirectToSignIn({ returnBackUrl: redirectUrl.toString() });
+    }
   },
+  debug: false,
 });
 
 // This protects all routes including api/trpc routes

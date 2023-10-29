@@ -53,7 +53,7 @@ RUN ["chmod", "+x", "./ssm_get_parameter"]
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/static ./.next/static
-# COPY --from=builder /app/src/db/migrations ./migrations
+COPY --from=builder /app/next.config.js ./
 
 COPY --from=builder /app/docker-entrypoint.sh ./
 

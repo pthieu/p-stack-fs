@@ -6,6 +6,7 @@ import React from 'react';
 // import GoogleAnalytics from '~/components/google-analytics';
 import { ThemeProvider } from '~/components/theme-provider';
 import { Toaster } from '~/components/ui/toaster';
+import { ROUTES } from '~/constants';
 import '~/styles/globals.css';
 
 export const metadata: Metadata = {
@@ -20,11 +21,11 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <ClerkProvider
-      signInUrl="/login"
-      signUpUrl="/signup"
-      afterSignInUrl="/home"
+      signInUrl={ROUTES.LOGIN}
+      signUpUrl={ROUTES.SIGNUP}
+      afterSignInUrl={ROUTES.HOME}
       // should create user in the DB, redirect user to /setup
-      afterSignUpUrl="/api/auth/signup"
+      afterSignUpUrl={ROUTES.SIGNUP_COMPLETE}
       appearance={{
         variables: {
           // colorPrimary: 'transparent',

@@ -80,13 +80,13 @@ jobs:
       - run:
           name: Lint
           command: pnpm run lint
-      - run:
-          name: Compile
-          command: pnpm run build
-      - persist_to_workspace:
-          root: *workspace
-          paths:
-            - .
+      # - run:
+      #     name: Compile
+      #     command: pnpm run build
+      # - persist_to_workspace:
+      #     root: *workspace
+      #     paths:
+      #       - .
   run_migrations:
     docker:
       - image: *build-image
@@ -98,10 +98,10 @@ jobs:
       - run:
           name: Run Migrations
           command: pnpm run migrate
-      - persist_to_workspace:
-          root: *workspace
-          paths:
-            - .
+      # - persist_to_workspace:
+      #     root: *workspace
+      #     paths:
+      #       - .
   build_and_push:
     resource_class: arm.medium
     machine:
