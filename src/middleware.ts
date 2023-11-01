@@ -14,6 +14,7 @@ export default authMiddleware({
     '/api/webhooks(.*)',
     '/api/internal(.*)',
   ],
+  ignoredRoutes: ['/'],
   async afterAuth(auth, req) {
     // XXX(Phong): create user if the currently logged-in user does not have
     // a userId that we issued
