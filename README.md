@@ -59,16 +59,16 @@ Need to update the session token claims to work with social logins and detect if
 See: [link](https://discord.com/channels/856971667393609759/1158583782891339807/1158813553160097792)
 
 1. Go to `Clerk Dashboard > Sessions > Customize session tokens (edit)`
-2. Add the following:
+2. Add the following (WITHOUT IT YOU WILL GET an error `Error: Clerk: auth() was called but Clerk can't detect usage of authMiddleware().`):
 ```json
 {
 	"email": "{{user.primary_email_address}}",
 	"metadata": "{{user.public_metadata}}"
 }
 ```
-3. Go to `Paths``, set Application homepage to `/home` or `/dashboard` or whatever you want otherwise it will keep redirecting the user to `/` if the user is already logged in and you click the login button.
-4. Set up secret keys for dev/production
-5. Enable webhooks for user creation and deletion (optional)
+3. Go to `Paths`, set Application homepage to `/home` or `/dashboard` or whatever you want otherwise it will keep redirecting the user to `/` if the user is already logged in and you click the login button.
+4. Set up secret keys for dev/production in .env/SSM
+5. Set up google auth project for prod (no verification needed)
 
 
 # Debugging
