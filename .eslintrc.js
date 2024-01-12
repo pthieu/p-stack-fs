@@ -81,5 +81,6 @@ module.exports = {
       },
     ],
     'react-hooks/exhaustive-deps': 'off',
+    'tailwindcss/no-custom-classname': 'off',
   },
 };

@@ -1,7 +1,5 @@
-import { config as dotenvConfig } from 'dotenv';
+import 'dotenv/config';
 import type { Config } from 'drizzle-kit';
-
-dotenvConfig();
 
 export default {
   schema: './src/db/schema/index.ts',
