@@ -27,7 +27,7 @@ export async function GET(req: Request) {
       await User.create({
         email,
         clerkId: clerkUser.id,
-      }).returning()
+      })
     )?.[0];
 
     await clerkClient.users.updateUserMetadata(clerkUser.id, {
