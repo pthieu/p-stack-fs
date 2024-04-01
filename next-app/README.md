@@ -74,7 +74,7 @@ See: [link](https://discord.com/channels/856971667393609759/1158583782891339807/
 # Debugging
 
 ## VSCode
-Debug with this `launch.json`
+Debug with this `launch.json` in the root folder.
 ```
 {
   "version": "0.2.0",

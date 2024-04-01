@@ -1,9 +1,9 @@
 import { clerkClient, currentUser, redirectToSignIn } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 import { NextResponse } from 'next/server';
+import * as User from '~/db/models/user';
 
 import { ROUTES } from '~/constants';
-import * as User from '~/db/models/user';
 import { convertReqUrlToReqHostUrl } from '~/lib/server';
 
 export async function GET(req: Request) {

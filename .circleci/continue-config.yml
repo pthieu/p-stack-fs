@@ -1,14 +1,19 @@
 version: 2.1
 
 orbs:
-  aws-ecr: circleci/aws-ecr@8.2.1
+  aws-cli: circleci/aws-cli@4
+  aws-ecr: circleci/aws-ecr@9
 
 variables:
   - &build-image cimg/node:20.2.0
-  - &workspace /home/circleci/project
   - &ecr-repo p-stack-fs
 
 parameters:
+  workspace:
+    type: string
+    default: "/home/circleci/repo"
+    description: |
+      The workspace to use for the pipeline.
   version-tag:
     type: string
     default: "${CIRCLE_BUILD_NUM}-${CIRCLE_SHA1:0:8}"
@@ -60,10 +65,10 @@ jobs:
   build_workspace:
     docker:
       - image: *build-image
-    working_directory: ~/repo/next-app
+    working_directory: << pipeline.parameters.workspace >>/next-app
     steps:
       - checkout:
-          path: ~/repo
+          path: << pipeline.parameters.workspace >>
       - run:
           name: Install pnpm
           command: sudo npm install -g pnpm
@@ -80,15 +85,16 @@ jobs:
           paths:
             - node_modules
       - persist_to_workspace:
-          root: *workspace
+          root: << pipeline.parameters.workspace >>
           paths:
             - .
   lint_and_compile:
     docker:
       - image: *build-image
+    working_directory: << pipeline.parameters.workspace >>/next-app
     steps:
       - attach_workspace:
-          at: *workspace
+          at: << pipeline.parameters.workspace >>
       - run:
           name: Lint
           command: pnpm run lint
@@ -96,7 +102,7 @@ jobs:
       #     name: Compile
       #     command: pnpm run build
       # - persist_to_workspace:
-      #     root: *workspace
+      #     root: << pipeline.parameters.workspace >>
       #     paths:
       #       - .
   run_migrations:
@@ -106,16 +112,16 @@ jobs:
           NODE_ENV: production
     steps:
       - attach_workspace:
-          at: *workspace
+          at: << pipeline.parameters.workspace >>
       - run:
           name: Run Migrations
           command: pnpm run migrate
       # - persist_to_workspace:
-      #     root: *workspace
+      #     root: << pipeline.parameters.workspace >>
       #     paths:
       #       - .
   build_and_push:
-    working_directory:
+    working_directory: << pipeline.parameters.workspace >>/next-app
     resource_class: arm.medium
     machine:
       image: ubuntu-2004:current
@@ -137,15 +143,21 @@ jobs:
       #     name: Set up custom environment variables
       #     command: |
       #       echo "export SSM_BASE_PATH=SOME VALUE HERE" >> $BASH_ENV
-      - aws-ecr/build-and-push-image:
+      - attach_workspace:
+          at: << pipeline.parameters.workspace >>
+      - aws-ecr/build_and_push_image:
+          auth:
+            - aws-cli/setup:
+              role_arn: arn:aws:iam::$AWS_ACCOUNT_ID
+          path: << pipeline.parameters.workspace >>/next-app
           platform: << pipeline.parameters.architecture >>
-          registry-id: AWS_ACCOUNT_ID
           region: us-west-2
+          checkout: false
           repo: << parameters.repo >>
           tag: << pipeline.parameters.version-tag >>,latest
           # XXX(Phong) - TODO: figure this out
           # extra-build-args: --build-arg DATABASE_URL --build-arg SSM_BASE_PATH
       - persist_to_workspace:
-          root: *workspace
+          root: << pipeline.parameters.workspace >>
           paths:
             - .

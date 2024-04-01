@@ -1,9 +1,9 @@
 import { authMiddleware, currentUser, redirectToSignIn } from '@clerk/nextjs';
 import { NextResponse } from 'next/server';
+import { ClerkMetadata } from '~/types';
 
 import { ROUTES } from '~/constants';
 import { convertReqUrlToReqHostUrl } from '~/lib/server';
-import { ClerkMetadata } from '~/types';
 
 export default authMiddleware({
   publicRoutes: [

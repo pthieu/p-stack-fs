@@ -1,10 +1,11 @@
-version: "2.1"
+version: 2.1
 setup: true
+
 orbs:
   path-filtering: circleci/path-filtering@1.0.0
 
 workflows:
-  generate-config:
+  choose-workflow:
     jobs:
       - path-filtering/filter:
           name: check-updated-files
