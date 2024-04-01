@@ -1,138 +1,15 @@
-version: 2.1
-
+version: "2.1"
+setup: true
 orbs:
-  aws-ecr: circleci/aws-ecr@8.2.1
-
-variables:
-  - &build-image cimg/node:20.2.0
-  - &workspace /home/circleci/project
-  - &ecr-repo p-stack-fs
-
-parameters:
-  version-tag:
-    type: string
-    default: "${CIRCLE_BUILD_NUM}-${CIRCLE_SHA1:0:8}"
-    description: |
-      The version tag to apply to the image.
-  architecture:
-    type: string
-    default: "linux/aarch64"
-    description: |
-      The architecture to build the image for.
+  path-filtering: circleci/path-filtering@1.0.0
 
 workflows:
-  main:
+  generate-config:
     jobs:
-      - build_workspace:
-          filters:
-            branches:
-              only:
-                - main
-      - lint_and_compile:
-          requires:
-            - build_workspace
-      # - wait_for_approval:
-      #     type: approval
-      #     requires:
-      #       - lint_and_compile
-      - build_and_push:
-          context:
-            - global
-          repo: *ecr-repo
-          requires:
-            - lint_and_compile
-            # - wait_for_approval
-      - run_migrations:
-          requires:
-            - build_and_push
-
-jobs:
-  build_workspace:
-    docker:
-      - image: *build-image
-    steps:
-      - checkout
-      - run:
-          name: Install pnpm
-          command: sudo npm install -g pnpm
-      - restore_cache:
-          name: Restore pnpm Package Cache
-          keys:
-            - pnpm-packages-{{ checksum "pnpm-lock.yaml" }}
-      - run:
-          name: Install Dependencies
-          command: pnpm install
-      - save_cache:
-          name: Save pnpm Package Cache
-          key: pnpm-packages-{{ checksum "pnpm-lock.yaml" }}
-          paths:
-            - node_modules
-      - persist_to_workspace:
-          root: *workspace
-          paths:
-            - .
-  lint_and_compile:
-    docker:
-      - image: *build-image
-    steps:
-      - attach_workspace:
-          at: *workspace
-      - run:
-          name: Lint
-          command: pnpm run lint
-      # - run:
-      #     name: Compile
-      #     command: pnpm run build
-      # - persist_to_workspace:
-      #     root: *workspace
-      #     paths:
-      #       - .
-  run_migrations:
-    docker:
-      - image: *build-image
-        environment:
-          NODE_ENV: production
-    steps:
-      - attach_workspace:
-          at: *workspace
-      - run:
-          name: Run Migrations
-          command: pnpm run migrate
-      # - persist_to_workspace:
-      #     root: *workspace
-      #     paths:
-      #       - .
-  build_and_push:
-    resource_class: arm.medium
-    machine:
-      image: ubuntu-2004:current
-    executor: aws-ecr/default
-    parameters:
-      repo:
-        type: string
-        default: ''
-        description: |
-          The name of the ECR repo to push an image to.
-      region:
-        type: string
-        default: 'us-west-2'
-        description: |
-          The AWS region to push the image to.
-    steps:
-      # XXX(Phong) - TODO: figure this out
-      # - run:
-      #     name: Set up custom environment variables
-      #     command: |
-      #       echo "export SSM_BASE_PATH=SOME VALUE HERE" >> $BASH_ENV
-      - aws-ecr/build-and-push-image:
-          platform: << pipeline.parameters.architecture >>
-          registry-id: AWS_ACCOUNT_ID
-          region: us-west-2
-          repo: << parameters.repo >>
-          tag: << pipeline.parameters.version-tag >>,latest
-          # XXX(Phong) - TODO: figure this out
-          # extra-build-args: --build-arg DATABASE_URL --build-arg SSM_BASE_PATH
-      - persist_to_workspace:
-          root: *workspace
-          paths:
-            - .
+      - path-filtering/filter:
+          name: check-updated-files
+          base-revision: main
+          config-path: .circleci/continue-config.yml
+          mapping: |
+            db/.* run-all true
+            next-app/.* run-next-pipeline true
