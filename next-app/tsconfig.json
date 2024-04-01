@@ -23,20 +23,20 @@
         "name": "next"
       }
     ],
-    "paths": {
-      "~/*": [
-        "./src/*"
-      ]
-    }
+    "baseUrl": ".",
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "tailwind.config.js"
+    "tailwind.config.js",
+    "../drizzle.config.ts"
   ],
   "exclude": [
     "node_modules"
+  ],
+  "extends": [
+    "../tsconfig.base.json"
   ]
 }

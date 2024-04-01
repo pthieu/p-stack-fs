@@ -84,6 +84,19 @@ Debug with this `launch.json`
       "request": "launch",
       "type": "node-terminal"
       "command": "pnpm dev",
+      "cwd": "${workspaceFolder}/next-app"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Current file (TS)",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceRoot}/node_modules/tsx/dist/cli.js",
+      "args": [
+        "${file}"
+      ],
     }
   ]
 }

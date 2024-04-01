@@ -6,6 +6,7 @@
       "request": "launch",
       "type": "node-terminal",
       "command": "pnpm dev",
+      "cwd": "${workspaceFolder}/next-app"
     },
     {
       "name": "Next.js: debug client-side",

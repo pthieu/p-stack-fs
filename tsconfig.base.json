@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "~/types": [
+        "../types"
+      ],
+      "~/types*": [
+        "../types*"
+      ],
+      "~/db": [
+        "../db"
+      ],
+      "~/db*": [
+        "../db*"
+      ],
+      "~/*": [
+        "./src/*"
+      ]
+    },
+    "baseUrl": ".",
+  }
+}
