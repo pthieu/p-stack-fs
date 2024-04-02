@@ -12,5 +12,6 @@ workflows:
           base-revision: main
           config-path: .circleci/continue-config.yml
           mapping: |
-            db/.* run-all true
+            db/(?!migrations).* run-db-pipeline true
+            db/migrations/.* run-db-migrations true
             next-app/.* run-next-pipeline true

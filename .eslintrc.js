@@ -1,5 +1,4 @@
 module.exports = {
-  root: true,
   env: {
     es6: true,
     node: true,
@@ -22,7 +21,6 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:import/errors',
     'plugin:import/warnings',
-    'next/core-web-vitals',
     'plugin:prettier/recommended', // Make sure this is always the last element in the array.
   ],
   plugins: ['@typescript-eslint'],

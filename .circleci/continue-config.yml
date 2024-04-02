@@ -11,7 +11,7 @@ variables:
 parameters:
   workspace:
     type: string
-    default: "/home/circleci/repo"
+    default: "/home/circleci/project"
     description: |
       The workspace to use for the pipeline.
   version-tag:
@@ -24,7 +24,10 @@ parameters:
     default: "linux/aarch64"
     description: |
       The architecture to build the image for.
-  run-all:
+  run-db-pipeline:
+    type: boolean
+    default: false
+  run-db-migrations:
     type: boolean
     default: false
   run-next-pipeline:
@@ -32,10 +35,23 @@ parameters:
     default: false
 
 workflows:
+  db-pipeline:
+    when:
+      or:
+        - equal: [true, << pipeline.parameters.run-db-migrations >>]
+    jobs:
+      - build_workspace:
+          filters:
+            branches:
+              only:
+                - main
+      - run_migrations:
+          requires:
+            - build_workspace
   next-app:
     when:
       or:
-        - equal: [true, << pipeline.parameters.run-all >>]
+        - equal: [true, << pipeline.parameters.run-db-pipeline >>]
         - equal: [true, << pipeline.parameters.run-next-pipeline >>]
     jobs:
       - build_workspace:
@@ -57,9 +73,9 @@ workflows:
           requires:
             - lint_and_compile
             # - wait_for_approval
-      - run_migrations:
-          requires:
-            - build_and_push
+      # - run_migrations:
+      #     requires:
+      #       - build_and_push
 
 jobs:
   build_workspace:
