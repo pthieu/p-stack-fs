@@ -23,6 +23,20 @@
         "name": "next"
       }
     ],
+    "paths": {
+      "~/types": [
+        "../shared/types"
+      ],
+      "~/db": [
+        "../db"
+      ],
+      "~/db*": [
+        "../db*"
+      ],
+      "~/*": [
+        "./src/*"
+      ]
+    },
     "baseUrl": ".",
   },
   "include": [

@@ -1,7 +1,7 @@
 import { authMiddleware, currentUser, redirectToSignIn } from '@clerk/nextjs';
 import { NextResponse } from 'next/server';
-import { ClerkMetadata } from '~/types';
 
+import { ClerkMetadata } from '../../shared/types';
 import { ROUTES } from '~/constants';
 import { convertReqUrlToReqHostUrl } from '~/lib/server';
 
