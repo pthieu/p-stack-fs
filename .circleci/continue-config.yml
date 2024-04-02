@@ -148,7 +148,8 @@ jobs:
       - aws-ecr/build_and_push_image:
           auth:
             - aws-cli/setup:
-              role_arn: arn:aws:iam::$AWS_ACCOUNT_ID
+          # build_path at parent so we can copy ~/db
+          build_path: << pipeline.parameters.workspace >>
           path: << pipeline.parameters.workspace >>/next-app
           platform: << pipeline.parameters.architecture >>
           region: us-west-2

@@ -8,17 +8,31 @@ FROM node:20-alpine AS base
 FROM base AS deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
-WORKDIR /app
 
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+# For some reason, we can't use the --prod flag, we need the devDependencies, otherwise we get `Module not found` errors
+# trying to find ~/db/*, I think it has to do with typescript knowing how to resolve paths
+# And for some reason, the top-level packages require deps to be installed too, otherwise you require import them in subdirs
+WORKDIR /repo
+COPY . .
+RUN npm i -g pnpm
+RUN pnpm i --frozen-lockfile
 
-RUN npm i -g pnpm && pnpm i --prod --frozen-lockfile
+WORKDIR /repo/next-app
+RUN pnpm i --prod --frozen-lockfile
 
 # Rebuild the source code only when needed
 FROM base AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+WORKDIR /repo
+
+# For some reason if you try to copy db and other files in the same line up one folder, it spreads the db folder's files out
 COPY . .
+COPY --from=deps /repo/node_modules ./node_modules
+COPY --from=deps /repo/next-app/node_modules ./next-app/node_modules
+
+# For some reason, we can't use the --prod flag, we need the devDependencies, otherwise we get `Module not found` errors
+# trying to find ~/db/*, I think it has to do with typescript knowing how to resolve paths
+
+WORKDIR /repo/next-app
 
 RUN ["chmod", "+x", "./docker-entrypoint.sh"]
 
@@ -50,12 +64,12 @@ RUN ["chmod", "+x", "./ssm_get_parameter"]
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/next.config.js ./
+COPY --from=builder /repo/next-app/.next/standalone ./
+COPY --from=builder /repo/next-app/public ./public
+COPY --from=builder /repo/next-app/.next/static ./.next/static
+COPY --from=builder /repo/next-app/next.config.js ./
 
-COPY --from=builder /app/docker-entrypoint.sh ./
+COPY --from=builder /repo/next-app/docker-entrypoint.sh ./
 
 EXPOSE 80
 
