@@ -1,4 +1,4 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+### General
 
 # dependencies
 node_modules
@@ -39,3 +39,18 @@ next-env.d.ts
 # IDE
 .vscode
 !.vscode/launch.json
+
+
+### Functions
+# config
+**/**/config/production.sh
+*.tfvars*
+
+# output
+functions/dist/
+.terraform/
+*.tfstate*
+
+# layers output
+functions/layers/dist
+functions/layers/ffmpeg/bin
